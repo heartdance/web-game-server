@@ -1,0 +1,10 @@
+server:
+  port: 80
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+
+spring.resources.static-locations: file:/opt/springboot-demo/static/,classpath:/static/
