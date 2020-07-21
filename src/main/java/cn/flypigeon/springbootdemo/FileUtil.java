@@ -8,8 +8,9 @@ public class FileUtil {
 
     public static void createFileByBytes(byte[] bytes, String filePath) {
         File file = new File(filePath);
-        if (!file.getParentFile().mkdirs()) {
-            if (!file.exists()) {
+        File parentFile = file.getParentFile();
+        if (!parentFile.mkdirs()) {
+            if (!parentFile.exists()) {
                 return;
             }
         }

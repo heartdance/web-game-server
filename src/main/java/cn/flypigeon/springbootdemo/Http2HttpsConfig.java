@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnProperty(name="server.port", havingValue="443")
-public class Http2HttpsConf {
+public class Http2HttpsConfig {
 
     @Bean
     public TomcatServletWebServerFactory servletContainer() {
@@ -38,4 +38,5 @@ public class Http2HttpsConf {
         connector.setRedirectPort(443);
         return connector;
     }
+
 }
