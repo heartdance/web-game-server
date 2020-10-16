@@ -1,9 +1,10 @@
 server:
-  port: 443
-  ssl:
-    key-store: www.flypigeon.cn.jks
-    key-store-password: # key-store-password
-    key-store-type: JKS
+  port: 8080
+#  port: 443
+#  ssl:
+#    key-store: www.flypigeon.cn.jks
+#    key-store-password: # key-store-password
+#    key-store-type: JKS
 
 spring:
   servlet:
