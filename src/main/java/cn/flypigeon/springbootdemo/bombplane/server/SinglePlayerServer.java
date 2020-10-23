@@ -1,10 +1,8 @@
-package cn.flypigeon.springbootdemo.bombplane.websocket;
+package cn.flypigeon.springbootdemo.bombplane.server;
 
-import cn.flypigeon.springbootdemo.bombplane.Checkerboard;
-import cn.flypigeon.springbootdemo.bombplane.Plane;
-import cn.flypigeon.springbootdemo.bombplane.entity.BoomPoint;
+import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
+import cn.flypigeon.springbootdemo.bombplane.component.base.Room;
 import cn.flypigeon.springbootdemo.bombplane.entity.ErrorMessage;
-import cn.flypigeon.springbootdemo.bombplane.entity.GameOver;
 import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,22 +12,24 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Created by htf on 2020/10/16.
  */
-@ServerEndpoint("/plane/single/{userId}")
+@ServerEndpoint("/plane/single/{userId}/{userName}")
 @Component
-public class SinglePlayerServer {
+public class SinglePlayerServer implements Server {
 
     private Session session;
-    private Checkerboard checkerboard;
+    private Player player;
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId") String userId) {
+    public void onOpen(Session session, @PathParam("userId") Integer userId, @PathParam("userName") String userName) {
         this.session = session;
+        player = new Player();
+        player.setRoom(new Room(1, 1));
+        player.setId(userId);
+        player.setName(userName);
     }
 
     @OnClose
@@ -52,36 +52,9 @@ public class SinglePlayerServer {
         JSONObject command = JSON.parseObject(message);
         Integer code = command.getInteger("code");
         if (code == 3) {
-            checkerboard = new Checkerboard(10, 10);
-            Random random = new Random();
-            for (int i = 0; i < 3; ) {
-                Plane plane = new Plane();
-                plane.setX(random.nextInt(10));
-                plane.setY(random.nextInt(10));
-                plane.setDirection(random.nextInt(4));
-                try {
-                    checkerboard.addPlane(plane);
-                } catch (IllegalOperationException e) {
-                    continue;
-                }
-                i++;
-            }
+
         } else if (code == 5) {
-            Integer x = command.getInteger("x");
-            Integer y = command.getInteger("y");
-            Checkerboard.CheckerPoint point = checkerboard.attack(x, y);
-            BoomPoint boomPoint = new BoomPoint();
-            boomPoint.setOwner(1);
-            boomPoint.setEnd(checkerboard.isEnd());
-            boomPoint.setType(point.getType().code());
-            boomPoint.setX(x);
-            boomPoint.setY(y);
-            sendJSON(boomPoint);
-            if (checkerboard.isEnd()) {
-                GameOver gameOver = new GameOver();
-                gameOver.setPlanes(Arrays.asList(checkerboard.getPlanes()));
-                sendJSON(gameOver);
-            }
+
         }
     }
 
@@ -106,5 +79,10 @@ public class SinglePlayerServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Player getPlayer() {
+        return this.player;
     }
 }

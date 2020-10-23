@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.bombplane.websocket;
+package cn.flypigeon.springbootdemo.bombplane.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

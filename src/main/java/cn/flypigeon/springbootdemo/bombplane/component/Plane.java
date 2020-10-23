@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.bombplane;
+package cn.flypigeon.springbootdemo.bombplane.component;
 
 import lombok.Data;
 
