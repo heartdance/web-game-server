@@ -22,6 +22,8 @@ public class BombPlane implements Game {
      */
     private int status = 0;
 
+    private int current = 0;
+
     public BombPlane(int playerCount) {
         players = new Player[playerCount];
         checkerboards = new Checkerboard[playerCount];
@@ -30,15 +32,64 @@ public class BombPlane implements Game {
         }
     }
 
+    public Checkerboard getCheckerboard(Player player) {
+        for (int i = 0; i < players.length; i++) {
+            if (player.equals(players[i])) {
+                return checkerboards[i];
+            }
+        }
+        return null;
+    }
+
     public void startPlacePlane() {
-        if (status != 0) {
+        if (status != 0 && status != 3) {
             throw new IllegalOperationException("游戏已经开始");
         }
         status = 1;
     }
 
     public void startAttack() {
+        if (status != 1) {
+            throw new IllegalOperationException("请先放置飞机");
+        }
+        status = 2;
+    }
 
+    public void gameOver() {
+        status = 3;
+    }
+
+    public Player currentPlayer() {
+        return players[current];
+    }
+
+    public Checkerboard currentCheckerboard() {
+        return checkerboards[current];
+    }
+
+    public Player anotherPlayer() {
+        return players[current == 0 ? 1 : 0];
+    }
+
+    public Checkerboard anotherCheckerboard() {
+        return checkerboards[current == 0 ? 1 : 0];
+    }
+
+    public void next() {
+        if (this.current == 0) {
+            this.current = 1;
+        } else {
+            this.current = 0;
+        }
+    }
+
+    public boolean isEnd() {
+        for (Checkerboard checkerboard : checkerboards) {
+            if (checkerboard.isEnd()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

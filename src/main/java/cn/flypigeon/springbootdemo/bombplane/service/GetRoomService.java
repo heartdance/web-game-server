@@ -6,6 +6,8 @@ import cn.flypigeon.springbootdemo.bombplane.server.Server;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 获取房间列表
+ * 反馈给此玩家所有房间信息，包括房间内玩家信息
  * Created by htf on 2020/10/23.
  */
 public class GetRoomService extends Service {

@@ -15,6 +15,6 @@ public class BoomPoint extends Command {
     private int type;
 
     public BoomPoint() {
-        super(4);
+        super(8);
     }
 }

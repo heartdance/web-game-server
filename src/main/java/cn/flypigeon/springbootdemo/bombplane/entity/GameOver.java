@@ -15,6 +15,6 @@ public class GameOver extends Command {
     private List<Plane> planes = new ArrayList<>();
 
     public GameOver() {
-        super(5);
+        super(9);
     }
 }

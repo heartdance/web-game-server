@@ -17,6 +17,9 @@ public class Player {
     private String name;
 
     @JSONField(serialize = false)
+    private Sender sender;
+
+    @JSONField(serialize = false)
     private Room room;
 
     private boolean ready;
@@ -49,6 +52,10 @@ public class Player {
         }
     }
 
+    public void send(Object message) {
+        sender.send(message);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,4 +68,5 @@ public class Player {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

@@ -4,10 +4,7 @@ import cn.flypigeon.springbootdemo.bombplane.component.base.Hall;
 import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
 import cn.flypigeon.springbootdemo.bombplane.entity.ErrorMessage;
 import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
-import cn.flypigeon.springbootdemo.bombplane.service.GetRoomService;
-import cn.flypigeon.springbootdemo.bombplane.service.JoinRoomService;
-import cn.flypigeon.springbootdemo.bombplane.service.PlayerReadyService;
-import cn.flypigeon.springbootdemo.bombplane.service.Service;
+import cn.flypigeon.springbootdemo.bombplane.service.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
@@ -16,8 +13,6 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by htf on 2020/10/16.
@@ -32,11 +27,13 @@ public class MultiPlayerServer implements Server {
         Service tempService = new PlayerReadyService(null);
         tempService = new JoinRoomService(tempService);
         tempService = new GetRoomService(tempService);
+        tempService = new PlayerReadyService(tempService);
+        tempService = new PlacePlaneService(tempService);
+        tempService = new BoomPointService(tempService);
         service = tempService;
     }
 
     public static final Hall HALL = new Hall(1, 2);
-    public static final Map<Integer, MultiPlayerServer> PLAYER_MAP = new ConcurrentHashMap<>();
 
     private Session session;
     private Player player;
@@ -47,7 +44,7 @@ public class MultiPlayerServer implements Server {
         player = new Player();
         player.setId(userId);
         player.setName(userName);
-        PLAYER_MAP.put(player.getId(), this);
+        player.setSender(this);
     }
 
     @OnClose
@@ -56,9 +53,9 @@ public class MultiPlayerServer implements Server {
     }
 
     @OnMessage
-    public void warpOnMessage(String message, Session session) {
+    public void warpOnMessage(String message) {
         try {
-            onMessage(message, session);
+            onMessage(message);
         } catch (IllegalOperationException e) {
             ErrorMessage errorMessage = new ErrorMessage();
             errorMessage.setMessage(e.getMessage());
@@ -66,15 +63,15 @@ public class MultiPlayerServer implements Server {
         }
     }
 
-    public void onMessage(String message, Session session) {
+    public void onMessage(String message) {
         JSONObject command = JSON.parseObject(message);
         Integer code = command.getInteger("code");
         service.process(code, this, command);
     }
 
     @OnError
-    public void onError(Session session, Throwable error) {
-        sendMessage("");
+    public void onError(Throwable error) {
+        sendMessage(error.getMessage());
     }
 
     public void sendJSON(Object json) {

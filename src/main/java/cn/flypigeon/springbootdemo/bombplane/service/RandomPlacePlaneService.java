@@ -2,6 +2,7 @@ package cn.flypigeon.springbootdemo.bombplane.service;
 
 import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
 import cn.flypigeon.springbootdemo.bombplane.component.Plane;
+import cn.flypigeon.springbootdemo.bombplane.entity.Command;
 import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
 import cn.flypigeon.springbootdemo.bombplane.server.Server;
 import com.alibaba.fastjson.JSONObject;
@@ -9,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.Random;
 
 /**
+ * 随机生成飞机位置
  * Created by htf on 2020/10/23.
  */
 public class RandomPlacePlaneService extends Service {
@@ -39,5 +41,6 @@ public class RandomPlacePlaneService extends Service {
             }
             i++;
         }
+        server.sendJSON(new Command(5));
     }
 }

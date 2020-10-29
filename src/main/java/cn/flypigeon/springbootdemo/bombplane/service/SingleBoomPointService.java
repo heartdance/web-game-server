@@ -10,6 +10,8 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.Arrays;
 
 /**
+ * 单人炸飞机
+ * 炸后反馈被炸点的状态
  * Created by htf on 2020/10/23.
  */
 public class SingleBoomPointService extends Service {

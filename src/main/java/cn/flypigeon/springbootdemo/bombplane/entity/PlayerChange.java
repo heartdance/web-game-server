@@ -4,14 +4,16 @@ import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
 import lombok.Data;
 
 /**
- * Created by htf on 2020/10/22.
+ * 房间内玩家变动
+ * Created by htf on 2020/10/28.
  */
 @Data
-public class PlayerReady extends Command {
+public class PlayerChange extends Command {
 
     private Player player;
+    private Boolean join;
 
-    public PlayerReady() {
-        super(4);
+    public PlayerChange() {
+        super(3);
     }
 }

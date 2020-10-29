@@ -40,11 +40,27 @@ public class Room {
 
     public boolean allReady() {
         for (Player player : players) {
-            if (!player.isReady()) {
+            if (player == null || !player.isReady()) {
                 return false;
             }
         }
         return true;
+    }
+
+    public void broadcast(Object message, Player exclude) {
+        for (Player player : players) {
+            if (player != null && (exclude == null || !exclude.equals(player))) {
+                player.send(message);
+            }
+        }
+    }
+
+    public void broadcast(Object message) {
+        for (Player player : players) {
+            if (player != null) {
+                player.send(message);
+            }
+        }
     }
 
 }

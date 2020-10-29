@@ -2,12 +2,17 @@ package cn.flypigeon.springbootdemo.bombplane.service;
 
 import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
 import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
+import cn.flypigeon.springbootdemo.bombplane.entity.Command;
 import cn.flypigeon.springbootdemo.bombplane.entity.PlayerReady;
 import cn.flypigeon.springbootdemo.bombplane.server.MultiPlayerServer;
 import cn.flypigeon.springbootdemo.bombplane.server.Server;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 准备/取消准备
+ * 1. 检查游戏状态
+ * 1. 检查是否全部准备就绪，是则开始飞机放置
+ * 2. 反馈给房间内所有玩家该准备状态
  * Created by htf on 2020/10/23.
  */
 public class PlayerReadyService extends Service {
@@ -34,17 +39,19 @@ public class PlayerReadyService extends Service {
         for (Player player : players) {
             if (player != null) {
                 PlayerReady playerReady = new PlayerReady();
-                playerReady.setId(thePlayer.getId());
-                playerReady.setReady(ready);
-                MultiPlayerServer.PLAYER_MAP.get(player.getId()).sendJSON(playerReady);
+                playerReady.setPlayer(thePlayer);
+                player.send(playerReady);
             }
         }
         if (ready) {
             if (thePlayer.getRoom().allReady()) {
                 BombPlane bombPlane = new BombPlane(2);
-                bombPlane.setPlayers(thePlayer.getRoom().getPlayers());
+                bombPlane.setPlayers(players);
                 bombPlane.startPlacePlane();
                 thePlayer.getRoom().setGame(bombPlane);
+                for (Player player : players) {
+                    player.send(new Command(5));
+                }
             }
         }
     }

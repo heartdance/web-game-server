@@ -30,7 +30,7 @@ public class Checkerboard {
 
     public void addPlane(Plane plane) {
         if (planeCount > 2) {
-            throw new IllegalOperationException("");
+            throw new IllegalOperationException("飞机最多放置三架");
         }
         checkPlaneBound(plane);
         planes[planeCount++] = plane;
