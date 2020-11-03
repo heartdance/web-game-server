@@ -15,6 +15,8 @@ public class Plane {
     public Coordinate[] getAllPoint() {
         Coordinate[] coordinates = new Coordinate[10];
         Direction direction = Direction.ofCode(this.direction);
+        int x = this.x;
+        int y = this.y;
 
         int i = 0;
         Coordinate coordinate = new Coordinate(x, y);
@@ -22,6 +24,10 @@ public class Plane {
         int convert = 1;
         if (direction == Direction.BOTTOM || direction == Direction.RIGHT) {
             convert = -1;
+        }
+        if (direction == Direction.LEFT || direction == Direction.RIGHT) {
+            x = this.y;
+            y = this.x;
         }
 
         for (int j = 0; j < 5; j++) {
