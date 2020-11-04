@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Created by htf on 2020/10/16.
  */
-@ServerEndpoint("/plane/single/{userId}/{userName}")
+@ServerEndpoint("/ws/plane/single/{userId}/{userName}")
 @Component
 public class SinglePlayerServer implements Server {
 

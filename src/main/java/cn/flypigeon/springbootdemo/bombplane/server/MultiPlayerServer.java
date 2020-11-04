@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Created by htf on 2020/10/16.
  */
-@ServerEndpoint("/plane/multi/{userId}/{userName}")
+@ServerEndpoint("/ws/plane/multi/{userId}/{userName}")
 @Component
 public class MultiPlayerServer implements Server {
 
