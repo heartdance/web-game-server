@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class GameOver extends Command {
 
+    private int winner;
     private List<Plane> planes = new ArrayList<>();
 
     public GameOver() {

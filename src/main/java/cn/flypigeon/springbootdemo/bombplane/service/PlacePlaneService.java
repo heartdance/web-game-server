@@ -3,8 +3,9 @@ package cn.flypigeon.springbootdemo.bombplane.service;
 import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
 import cn.flypigeon.springbootdemo.bombplane.component.Checkerboard;
 import cn.flypigeon.springbootdemo.bombplane.component.Plane;
-import cn.flypigeon.springbootdemo.bombplane.entity.Command;
+import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
 import cn.flypigeon.springbootdemo.bombplane.entity.PlacePlaneResult;
+import cn.flypigeon.springbootdemo.bombplane.entity.StartBomb;
 import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
 import cn.flypigeon.springbootdemo.bombplane.server.Server;
 import com.alibaba.fastjson.JSONArray;
@@ -58,6 +59,11 @@ public class PlacePlaneService extends Service {
             }
         }
         game.startAttack();
-        game.currentPlayer().send(new Command(7));
+        StartBomb startBomb = new StartBomb();
+        startBomb.setOwner(1);
+        Player firstPlayer = game.getPlayers()[0];
+        firstPlayer.send(startBomb);
+        startBomb.setOwner(2);
+        server.getPlayer().getRoom().broadcast(startBomb, firstPlayer);
     }
 }

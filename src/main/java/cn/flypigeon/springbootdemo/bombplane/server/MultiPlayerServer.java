@@ -33,7 +33,7 @@ public class MultiPlayerServer implements Server {
         service = tempService;
     }
 
-    public static final Hall HALL = new Hall(1, 2);
+    public static final Hall HALL = new Hall(10, 2);
 
     private Session session;
     private Player player;

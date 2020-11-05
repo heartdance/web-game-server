@@ -83,9 +83,15 @@ public class BombPlane implements Game {
         }
     }
 
+    private boolean end;
+
     public boolean isEnd() {
+        if (end) {
+            return true;
+        }
         for (Checkerboard checkerboard : checkerboards) {
             if (checkerboard.isEnd()) {
+                end = true;
                 return true;
             }
         }

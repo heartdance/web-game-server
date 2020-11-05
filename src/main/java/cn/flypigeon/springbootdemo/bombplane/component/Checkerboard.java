@@ -16,7 +16,7 @@ public class Checkerboard {
     private final Plane[] planes = new Plane[3];
 
     private int planeCount = 0;
-    private int aliveCount = 3;
+    private int aliveCount = 0;
 
     public Checkerboard(int x, int y) {
         points = new CheckerPoint[x][];
@@ -43,6 +43,7 @@ public class Checkerboard {
             checkerPoint = points[body.getX()][body.getY()];
             checkerPoint.setType(PointType.BODY);
         }
+        aliveCount++;
     }
 
     private void checkPlaneBound(Plane plane) {

@@ -32,8 +32,14 @@ public class BoomPointService extends Service {
     @Override
     protected void process0(Server server, JSONObject command) {
         BombPlane game = (BombPlane) server.getPlayer().getRoom().getGame();
+        if (game.getStatus() == 1) {
+            throw new IllegalOperationException("放置飞机阶段不能炸点");
+        }
+        if (game.getStatus() == 3) {
+            throw new IllegalOperationException("游戏结束了");
+        }
         Player player = game.currentPlayer();
-        if (server.getPlayer().equals(player)) {
+        if (!server.getPlayer().equals(player)) {
             throw new IllegalOperationException("还没轮到你");
         }
         Integer x = command.getInteger("x");
@@ -43,13 +49,19 @@ public class BoomPointService extends Service {
         boomPoint.setX(x);
         boomPoint.setY(y);
         boomPoint.setType(checkerPoint.getType().code());
-        boomPoint.setOwner(game.anotherPlayer().getId());
+        boomPoint.setOwner(2);
         boomPoint.setEnd(game.isEnd());
-        player.getRoom().broadcast(boomPoint);
+        player.send(boomPoint);
+        boomPoint.setOwner(1);
+        player.getRoom().broadcast(boomPoint, player);
         if (boomPoint.isEnd()) {
             game.gameOver();
             GameOver gameOver = new GameOver();
+            gameOver.setWinner(server.getPlayer().getId());
             Player[] players = game.getPlayers();
+            for (Player p : players) {
+                p.setReady(false);
+            }
             Checkerboard[] checkerboards = game.getCheckerboards();
             gameOver.setPlanes(Arrays.asList(checkerboards[1].getPlanes()));
             players[0].send(gameOver);
