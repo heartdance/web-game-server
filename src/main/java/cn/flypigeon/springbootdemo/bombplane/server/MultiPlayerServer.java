@@ -2,6 +2,7 @@ package cn.flypigeon.springbootdemo.bombplane.server;
 
 import cn.flypigeon.springbootdemo.bombplane.component.base.Hall;
 import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
+import cn.flypigeon.springbootdemo.bombplane.component.base.Room;
 import cn.flypigeon.springbootdemo.bombplane.entity.ErrorMessage;
 import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
 import cn.flypigeon.springbootdemo.bombplane.service.*;
@@ -13,6 +14,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by htf on 2020/10/16.
@@ -44,12 +46,25 @@ public class MultiPlayerServer implements Server {
         player = new Player();
         player.setId(userId);
         player.setName(userName);
+        player.setOnline(true);
         player.setSender(this);
     }
 
     @OnClose
     public void onClose() {
-
+        this.player.setOnline(false);
+        Room room = player.getRoom();
+        if (room != null) {
+            Player[] players = room.getPlayers();
+            if (players != null) {
+                for (Player player : players) {
+                    if (player != null && player.isOnline()) {
+                        return;
+                    }
+                }
+                Arrays.fill(players, null);
+            }
+        }
     }
 
     @OnMessage
@@ -71,7 +86,7 @@ public class MultiPlayerServer implements Server {
 
     @OnError
     public void onError(Throwable error) {
-        sendMessage(error.getMessage());
+        sendMessage(error.getMessage() == null ? "发生错误..." : error.getMessage());
     }
 
     public void sendJSON(Object json) {

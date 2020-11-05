@@ -24,6 +24,8 @@ public class Player {
 
     private boolean ready;
 
+    private boolean online;
+
     public void ready() {
         if (this.room == null) {
             throw new IllegalOperationException("未进入房间");

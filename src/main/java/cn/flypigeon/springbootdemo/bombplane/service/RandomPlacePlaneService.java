@@ -1,6 +1,7 @@
 package cn.flypigeon.springbootdemo.bombplane.service;
 
 import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
+import cn.flypigeon.springbootdemo.bombplane.component.Checkerboard;
 import cn.flypigeon.springbootdemo.bombplane.component.Plane;
 import cn.flypigeon.springbootdemo.bombplane.entity.Command;
 import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
@@ -28,6 +29,11 @@ public class RandomPlacePlaneService extends Service {
     protected void process0(Server server, JSONObject command) {
         BombPlane game = new BombPlane(1);
         server.getPlayer().getRoom().setGame(game);
+        randomPlacePlaneToBoard(game.getCheckerboards()[0]);
+        server.sendJSON(new Command(5));
+    }
+
+    public static void randomPlacePlaneToBoard(Checkerboard checkerboard) {
         Random random = new Random();
         for (int i = 0; i < 3; ) {
             Plane plane = new Plane();
@@ -35,12 +41,11 @@ public class RandomPlacePlaneService extends Service {
             plane.setY(random.nextInt(10));
             plane.setDirection(random.nextInt(4));
             try {
-                game.getCheckerboards()[0].addPlane(plane);
+                checkerboard.addPlane(plane);
             } catch (IllegalOperationException e) {
                 continue;
             }
             i++;
         }
-        server.sendJSON(new Command(5));
     }
 }

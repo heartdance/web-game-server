@@ -16,6 +16,7 @@ public class BombPlane implements Game {
 
     /**
      * 游戏阶段
+     * 0 未开始
      * 1 放置飞机
      * 2 炸飞机
      * 3 游戏结束

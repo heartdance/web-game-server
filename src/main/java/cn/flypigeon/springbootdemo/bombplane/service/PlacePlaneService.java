@@ -32,19 +32,27 @@ public class PlacePlaneService extends Service {
 
     @Override
     protected void process0(Server server, JSONObject command) {
-        JSONArray planes = command.getJSONArray("planes");
-        if (planes.size() != 3) {
-            throw new IllegalOperationException("飞机必须放置三架");
-        }
         BombPlane game = (BombPlane) server.getPlayer().getRoom().getGame();
+        if (game.getStatus() != 1) {
+            throw new IllegalOperationException("不在放置飞机阶段");
+        }
         Checkerboard checkerboard = game.getCheckerboard(server.getPlayer());
-        for (int i = 0; i < planes.size(); i++) {
-            JSONObject jo = planes.getJSONObject(i);
-            Plane plane = new Plane();
-            plane.setX(jo.getInteger("x"));
-            plane.setY(jo.getInteger("y"));
-            plane.setDirection(jo.getInteger("direction"));
-            checkerboard.addPlane(plane);
+        Boolean random = command.getBoolean("random");
+        if (random != null && random) {
+            RandomPlacePlaneService.randomPlacePlaneToBoard(checkerboard);
+        } else {
+            JSONArray planes = command.getJSONArray("planes");
+            if (planes.size() != 3) {
+                throw new IllegalOperationException("飞机必须放置三架");
+            }
+            for (int i = 0; i < planes.size(); i++) {
+                JSONObject jo = planes.getJSONObject(i);
+                Plane plane = new Plane();
+                plane.setX(jo.getInteger("x"));
+                plane.setY(jo.getInteger("y"));
+                plane.setDirection(jo.getInteger("direction"));
+                checkerboard.addPlane(plane);
+            }
         }
         PlacePlaneResult placePlaneResult = new PlacePlaneResult();
         placePlaneResult.setPlanes(Arrays.asList(checkerboard.getPlanes()));
