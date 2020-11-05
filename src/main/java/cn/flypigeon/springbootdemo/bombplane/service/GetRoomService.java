@@ -1,6 +1,7 @@
 package cn.flypigeon.springbootdemo.bombplane.service;
 
 import cn.flypigeon.springbootdemo.bombplane.component.base.Room;
+import cn.flypigeon.springbootdemo.bombplane.entity.RoomList;
 import cn.flypigeon.springbootdemo.bombplane.server.MultiPlayerServer;
 import cn.flypigeon.springbootdemo.bombplane.server.Server;
 import com.alibaba.fastjson.JSONObject;
@@ -24,6 +25,8 @@ public class GetRoomService extends Service {
     @Override
     protected void process0(Server server, JSONObject command) {
         Room[] rooms = MultiPlayerServer.HALL.getRooms();
-        server.sendJSON(rooms);
+        RoomList roomList = new RoomList();
+        roomList.setRooms(rooms);
+        server.sendJSON(roomList);
     }
 }

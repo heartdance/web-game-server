@@ -12,9 +12,9 @@ public class Checkerboard {
      * 棋盘点坐标
      * 第一层为 x，第二层为 y
      */
-    private CheckerPoint[][] points;
+    private final CheckerPoint[][] points;
+    private final Plane[] planes = new Plane[3];
 
-    private Plane[] planes = new Plane[3];
     private int planeCount = 0;
     private int aliveCount = 3;
 
@@ -96,15 +96,17 @@ public class Checkerboard {
     }
 
     public enum PointType {
-        EMPTY, BODY, HEAD;
+
+        EMPTY(1), BODY(2), HEAD(3);
+
+        private final int code;
+
+        PointType(int code) {
+            this.code = code;
+        }
 
         public int code() {
-            switch (this) {
-                case EMPTY: return 1;
-                case BODY: return 2;
-                case HEAD: return 3;
-            }
-            return -1;
+            return code;
         }
     }
 }

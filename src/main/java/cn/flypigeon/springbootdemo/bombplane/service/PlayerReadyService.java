@@ -4,7 +4,6 @@ import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
 import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
 import cn.flypigeon.springbootdemo.bombplane.entity.Command;
 import cn.flypigeon.springbootdemo.bombplane.entity.PlayerReady;
-import cn.flypigeon.springbootdemo.bombplane.server.MultiPlayerServer;
 import cn.flypigeon.springbootdemo.bombplane.server.Server;
 import com.alibaba.fastjson.JSONObject;
 

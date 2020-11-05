@@ -15,43 +15,39 @@ public class Plane {
     public Coordinate[] getAllPoint() {
         Coordinate[] coordinates = new Coordinate[10];
         Direction direction = Direction.ofCode(this.direction);
-        int x = this.x;
-        int y = this.y;
 
         int i = 0;
-        Coordinate coordinate = new Coordinate(x, y);
-        coordinates[i++] = coordinate;
-        int convert = 1;
-        if (direction == Direction.BOTTOM || direction == Direction.RIGHT) {
-            convert = -1;
-        }
-        if (direction == Direction.LEFT || direction == Direction.RIGHT) {
-            x = this.y;
-            y = this.x;
-        }
-
-        for (int j = 0; j < 5; j++) {
-            coordinate = new Coordinate(x - 2 + j, y + convert);
-            coordinates[i++] = coordinate;
-        }
-        coordinate = new Coordinate(x, y + 2 * convert);
-        coordinates[i++] = coordinate;
-        for (int j = 0; j < 3; j++) {
-            coordinate = new Coordinate(x - 1 + j, y + 3 * convert);
-            coordinates[i++] = coordinate;
-        }
+        coordinates[i++] = new Coordinate(x, y);
+        int convert = direction == Direction.BOTTOM || direction == Direction.RIGHT ? -1 : 1;
 
         if (direction == Direction.LEFT || direction == Direction.RIGHT) {
-            for (int j = 1; j < coordinates.length; j++) {
-                coordinates[j].convert();
+            for (int j = -2; j <= 2; j++) {
+                coordinates[i++] = new Coordinate(x + convert, y + j);
+            }
+            coordinates[i++] = new Coordinate(x + 2 * convert, y);
+            for (int j = -1; j <= 1; j++) {
+                coordinates[i++] = new Coordinate(x + 3 * convert, y + j);
+            }
+        } else {
+            for (int j = -2; j <= 2; j++) {
+                coordinates[i++] = new Coordinate(x + j, y + convert);
+            }
+            coordinates[i++] = new Coordinate(x, y + 2 * convert);
+            for (int j = -1; j <= 1; j++) {
+                coordinates[i++] = new Coordinate(x + j, y + 3 * convert);
             }
         }
-
         return coordinates;
     }
 
     public enum Direction {
-        UP, RIGHT, BOTTOM, LEFT;
+        UP(3), RIGHT(0), BOTTOM(1), LEFT(2);
+
+        private final int code;
+
+        Direction(int code) {
+            this.code = code;
+        }
 
         public static Direction ofCode(int code) {
             switch (code) {
@@ -64,13 +60,7 @@ public class Plane {
         }
 
         public int code() {
-            switch (this) {
-                case UP: return 3;
-                case LEFT: return 2;
-                case RIGHT: return 0;
-                case BOTTOM: return 1;
-            }
-            return -1;
+            return code;
         }
     }
 }
