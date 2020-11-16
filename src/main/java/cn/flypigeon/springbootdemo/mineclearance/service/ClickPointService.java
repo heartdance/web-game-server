@@ -53,11 +53,8 @@ public class ClickPointService extends Service {
                     }
                     server.sendJSON(gameOver);
                 } else {
-                    List<Checkerboard.CheckerPoint> around = checkerboard.around(x, y);
-                    for (Checkerboard.CheckerPoint checkerPoint : around) {
-                        if (checkerPoint.getMineNum() == 0) {
-                            showAround(checkerboard, x, y, points);
-                        }
+                    if (point.getMineNum() == 0) {
+                        showAround(checkerboard, x, y, points);
                     }
                     server.sendJSON(showPoint);
                     if (game.isEnd()) {
@@ -76,7 +73,7 @@ public class ClickPointService extends Service {
         for (Checkerboard.CheckerPoint point : around) {
             if (point.getStatus() != 3) {
                 point.setStatus(3);
-                points.add(new ShowPoint.Point(x, y, point.getMineNum(), false));
+                points.add(new ShowPoint.Point(point.getX(), point.getY(), point.getMineNum(), false));
                 if (point.getMineNum() == 0) {
                     showAround(checkerboard, point.getX(), point.getY(), points);
                 }

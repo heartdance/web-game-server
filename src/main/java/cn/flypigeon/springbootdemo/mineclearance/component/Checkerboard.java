@@ -41,7 +41,7 @@ public class Checkerboard {
             }
             checkerPoint.mine = true;
             minePoints[i] = checkerPoint;
-            List<CheckerPoint> around = around(x, y);
+            List<CheckerPoint> around = around(checkerPoint.x, checkerPoint.y);
             for (CheckerPoint point : around) {
                 point.mineNum++;
             }
