@@ -1,6 +1,6 @@
-package cn.flypigeon.springbootdemo.bombplane.component.base;
+package cn.flypigeon.springbootdemo.game.component.base;
 
-import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
+import cn.flypigeon.springbootdemo.game.exception.IllegalOperationException;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 

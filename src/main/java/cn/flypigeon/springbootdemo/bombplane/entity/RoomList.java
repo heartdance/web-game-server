@@ -1,6 +1,6 @@
 package cn.flypigeon.springbootdemo.bombplane.entity;
 
-import cn.flypigeon.springbootdemo.bombplane.component.base.Room;
+import cn.flypigeon.springbootdemo.game.component.base.Room;
 import lombok.Data;
 
 @Data

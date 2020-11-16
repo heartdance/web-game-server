@@ -1,6 +1,6 @@
 package cn.flypigeon.springbootdemo.bombplane.component;
 
-import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
+import cn.flypigeon.springbootdemo.game.exception.IllegalOperationException;
 import lombok.Data;
 
 /**

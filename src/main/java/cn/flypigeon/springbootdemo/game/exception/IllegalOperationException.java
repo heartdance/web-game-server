@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.bombplane.exception;
+package cn.flypigeon.springbootdemo.game.exception;
 
 /**
  * Created by htf on 2020/10/16.

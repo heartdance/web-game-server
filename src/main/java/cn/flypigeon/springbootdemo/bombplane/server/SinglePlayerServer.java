@@ -1,28 +1,27 @@
 package cn.flypigeon.springbootdemo.bombplane.server;
 
-import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
-import cn.flypigeon.springbootdemo.bombplane.component.base.Room;
-import cn.flypigeon.springbootdemo.bombplane.entity.ErrorMessage;
-import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
-import cn.flypigeon.springbootdemo.bombplane.service.*;
+import cn.flypigeon.springbootdemo.bombplane.service.RandomPlacePlaneService;
+import cn.flypigeon.springbootdemo.bombplane.service.SingleBoomPointService;
+import cn.flypigeon.springbootdemo.game.component.base.Player;
+import cn.flypigeon.springbootdemo.game.component.base.Room;
+import cn.flypigeon.springbootdemo.game.server.WebSocketServer;
+import cn.flypigeon.springbootdemo.game.service.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.*;
+import javax.websocket.OnClose;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
 
 /**
  * Created by htf on 2020/10/16.
  */
 @ServerEndpoint("/ws/plane/single/{userId}/{userName}")
 @Component
-public class SinglePlayerServer implements Server {
-
-    private Session session;
-    private Player player;
+public class SinglePlayerServer extends WebSocketServer {
 
     private final static Service service;
 
@@ -47,48 +46,10 @@ public class SinglePlayerServer implements Server {
 
     }
 
-    @OnMessage
-    public void warpOnMessage(String message) {
-        try {
-            onMessage(message);
-        } catch (IllegalOperationException e) {
-            ErrorMessage errorMessage = new ErrorMessage();
-            errorMessage.setMessage(e.getMessage());
-            sendJSON(errorMessage);
-        }
-    }
-
     public void onMessage(String message) {
         JSONObject command = JSON.parseObject(message);
         Integer code = command.getInteger("code");
         service.process(code, this, command);
     }
 
-    @OnError
-    public void onError(Throwable error) {
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setMessage(error.getMessage());
-        sendJSON(errorMessage);
-    }
-
-    public void sendMessage(String message) {
-        try {
-            this.session.getBasicRemote().sendText(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendJSON(Object json) {
-        try {
-            this.session.getBasicRemote().sendText(JSON.toJSONString(json));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Player getPlayer() {
-        return this.player;
-    }
 }

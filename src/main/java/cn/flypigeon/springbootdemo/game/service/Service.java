@@ -1,6 +1,6 @@
-package cn.flypigeon.springbootdemo.bombplane.service;
+package cn.flypigeon.springbootdemo.game.service;
 
-import cn.flypigeon.springbootdemo.bombplane.server.Server;
+import cn.flypigeon.springbootdemo.game.server.Server;
 import com.alibaba.fastjson.JSONObject;
 
 /**

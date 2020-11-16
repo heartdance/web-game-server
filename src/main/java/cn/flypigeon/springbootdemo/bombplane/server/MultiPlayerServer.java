@@ -1,27 +1,25 @@
 package cn.flypigeon.springbootdemo.bombplane.server;
 
-import cn.flypigeon.springbootdemo.bombplane.component.base.Hall;
-import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
-import cn.flypigeon.springbootdemo.bombplane.component.base.Room;
-import cn.flypigeon.springbootdemo.bombplane.entity.ErrorMessage;
-import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
 import cn.flypigeon.springbootdemo.bombplane.service.*;
+import cn.flypigeon.springbootdemo.game.component.base.Hall;
+import cn.flypigeon.springbootdemo.game.component.base.Player;
+import cn.flypigeon.springbootdemo.game.server.WebSocketServer;
+import cn.flypigeon.springbootdemo.game.service.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
-import javax.websocket.*;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Created by htf on 2020/10/16.
  */
 @ServerEndpoint("/ws/plane/multi/{userId}/{userName}")
 @Component
-public class MultiPlayerServer implements Server {
+public class MultiPlayerServer extends WebSocketServer {
 
     private final static Service service;
 
@@ -37,9 +35,6 @@ public class MultiPlayerServer implements Server {
 
     public static final Hall HALL = new Hall(10, 2);
 
-    private Session session;
-    private Player player;
-
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") Integer userId, @PathParam("userName") String userName) {
         this.session = session;
@@ -50,62 +45,9 @@ public class MultiPlayerServer implements Server {
         player.setSender(this);
     }
 
-    @OnClose
-    public void onClose() {
-        this.player.setOnline(false);
-        Room room = player.getRoom();
-        if (room != null) {
-            Player[] players = room.getPlayers();
-            if (players != null) {
-                for (Player player : players) {
-                    if (player != null && player.isOnline()) {
-                        return;
-                    }
-                }
-                Arrays.fill(players, null);
-            }
-        }
-    }
-
-    @OnMessage
-    public void warpOnMessage(String message) {
-        try {
-            onMessage(message);
-        } catch (IllegalOperationException e) {
-            ErrorMessage errorMessage = new ErrorMessage();
-            errorMessage.setMessage(e.getMessage());
-            sendJSON(errorMessage);
-        }
-    }
-
     public void onMessage(String message) {
         JSONObject command = JSON.parseObject(message);
         Integer code = command.getInteger("code");
         service.process(code, this, command);
-    }
-
-    @OnError
-    public void onError(Throwable error) {
-        sendMessage(error.getMessage() == null ? "发生错误..." : error.getMessage());
-    }
-
-    public void sendJSON(Object json) {
-        try {
-            this.session.getBasicRemote().sendText(JSON.toJSONString(json));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendMessage(String message) {
-        try {
-            this.session.getBasicRemote().sendText(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Player getPlayer() {
-        return this.player;
     }
 }

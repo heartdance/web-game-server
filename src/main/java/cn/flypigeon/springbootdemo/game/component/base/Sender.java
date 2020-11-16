@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.bombplane.component.base;
+package cn.flypigeon.springbootdemo.game.component.base;
 
 /**
  * Created by htf on 2020/10/28.

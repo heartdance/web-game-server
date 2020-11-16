@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.bombplane.component.base;
+package cn.flypigeon.springbootdemo.game.component.base;
 
 import java.util.HashMap;
 import java.util.Map;

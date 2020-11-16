@@ -4,7 +4,8 @@ import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
 import cn.flypigeon.springbootdemo.bombplane.component.Checkerboard;
 import cn.flypigeon.springbootdemo.bombplane.entity.BoomPoint;
 import cn.flypigeon.springbootdemo.bombplane.entity.GameOver;
-import cn.flypigeon.springbootdemo.bombplane.server.Server;
+import cn.flypigeon.springbootdemo.game.server.Server;
+import cn.flypigeon.springbootdemo.game.service.Service;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.Arrays;

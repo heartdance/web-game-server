@@ -3,11 +3,12 @@ package cn.flypigeon.springbootdemo.bombplane.service;
 import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
 import cn.flypigeon.springbootdemo.bombplane.component.Checkerboard;
 import cn.flypigeon.springbootdemo.bombplane.component.Plane;
-import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
+import cn.flypigeon.springbootdemo.game.component.base.Player;
 import cn.flypigeon.springbootdemo.bombplane.entity.PlacePlaneResult;
 import cn.flypigeon.springbootdemo.bombplane.entity.StartBomb;
-import cn.flypigeon.springbootdemo.bombplane.exception.IllegalOperationException;
-import cn.flypigeon.springbootdemo.bombplane.server.Server;
+import cn.flypigeon.springbootdemo.game.exception.IllegalOperationException;
+import cn.flypigeon.springbootdemo.game.server.Server;
+import cn.flypigeon.springbootdemo.game.service.Service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 

@@ -1,7 +1,7 @@
-package cn.flypigeon.springbootdemo.bombplane.server;
+package cn.flypigeon.springbootdemo.game.server;
 
-import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
-import cn.flypigeon.springbootdemo.bombplane.component.base.Sender;
+import cn.flypigeon.springbootdemo.game.component.base.Player;
+import cn.flypigeon.springbootdemo.game.component.base.Sender;
 
 /**
  * Created by htf on 2020/10/23.

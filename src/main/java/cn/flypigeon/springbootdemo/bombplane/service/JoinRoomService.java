@@ -1,11 +1,12 @@
 package cn.flypigeon.springbootdemo.bombplane.service;
 
-import cn.flypigeon.springbootdemo.bombplane.component.base.Player;
-import cn.flypigeon.springbootdemo.bombplane.component.base.Room;
+import cn.flypigeon.springbootdemo.game.component.base.Player;
+import cn.flypigeon.springbootdemo.game.component.base.Room;
 import cn.flypigeon.springbootdemo.bombplane.entity.JoinRoom;
 import cn.flypigeon.springbootdemo.bombplane.entity.PlayerChange;
 import cn.flypigeon.springbootdemo.bombplane.server.MultiPlayerServer;
-import cn.flypigeon.springbootdemo.bombplane.server.Server;
+import cn.flypigeon.springbootdemo.game.server.Server;
+import cn.flypigeon.springbootdemo.game.service.Service;
 import com.alibaba.fastjson.JSONObject;
 
 /**
