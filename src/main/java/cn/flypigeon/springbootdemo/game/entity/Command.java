@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.bombplane.entity;
+package cn.flypigeon.springbootdemo.game.entity;
 
 import lombok.Data;
 

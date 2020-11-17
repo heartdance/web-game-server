@@ -2,7 +2,7 @@ package cn.flypigeon.springbootdemo.bombplane.service;
 
 import cn.flypigeon.springbootdemo.bombplane.component.BombPlane;
 import cn.flypigeon.springbootdemo.game.component.base.Player;
-import cn.flypigeon.springbootdemo.bombplane.entity.Command;
+import cn.flypigeon.springbootdemo.game.entity.Command;
 import cn.flypigeon.springbootdemo.bombplane.entity.PlayerReady;
 import cn.flypigeon.springbootdemo.game.server.Server;
 import cn.flypigeon.springbootdemo.game.service.Service;

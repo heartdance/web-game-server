@@ -1,8 +1,9 @@
 package cn.flypigeon.springbootdemo.mineclearance.entity;
 
-import cn.flypigeon.springbootdemo.bombplane.entity.Command;
+import cn.flypigeon.springbootdemo.game.entity.Command;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +17,21 @@ public class GameOver extends Command {
 
     public GameOver() {
         super(4);
+    }
+
+    public GameOver(boolean win) {
+        this();
+        this.win = win;
+    }
+
+    public static GameOver ofWin() {
+        return new GameOver(true);
+    }
+
+    public static GameOver ofLose() {
+        GameOver gameOver = new GameOver(false);
+        gameOver.setMines(new ArrayList<>());
+        return gameOver;
     }
 
     @Data

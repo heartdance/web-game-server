@@ -1,8 +1,9 @@
 package cn.flypigeon.springbootdemo.mineclearance.entity;
 
-import cn.flypigeon.springbootdemo.bombplane.entity.Command;
+import cn.flypigeon.springbootdemo.game.entity.Command;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
 @Data
 public class ShowPoint extends Command {
 
-    private List<Point> points;
+    private List<Point> points = new ArrayList<>();
 
     public ShowPoint() {
         super(2);

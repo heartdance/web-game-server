@@ -1,6 +1,6 @@
 package cn.flypigeon.springbootdemo.game.server;
 
-import cn.flypigeon.springbootdemo.bombplane.entity.ErrorMessage;
+import cn.flypigeon.springbootdemo.game.entity.ErrorMessage;
 import cn.flypigeon.springbootdemo.game.component.base.Player;
 import cn.flypigeon.springbootdemo.game.component.base.Room;
 import cn.flypigeon.springbootdemo.game.exception.IllegalOperationException;
@@ -50,7 +50,9 @@ public abstract class WebSocketServer implements Server {
 
     @OnError
     public void onError(Throwable error) {
-        sendMessage(error.getMessage() == null ? "发生错误..." : error.getMessage());
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setMessage(error.getMessage() == null ? "发生错误..." : error.getMessage());
+        sendJSON(errorMessage);
     }
 
     public void sendJSON(Object json) {

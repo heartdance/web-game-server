@@ -1,7 +1,6 @@
 package cn.flypigeon.springbootdemo.mineclearance.service;
 
-import cn.flypigeon.springbootdemo.bombplane.entity.Command;
-import cn.flypigeon.springbootdemo.game.component.base.Game;
+import cn.flypigeon.springbootdemo.game.entity.Command;
 import cn.flypigeon.springbootdemo.game.server.Server;
 import cn.flypigeon.springbootdemo.game.service.Service;
 import cn.flypigeon.springbootdemo.mineclearance.component.MineClearance;

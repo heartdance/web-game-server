@@ -5,6 +5,7 @@ import cn.flypigeon.springbootdemo.game.service.Service;
 import cn.flypigeon.springbootdemo.mineclearance.component.Checkerboard;
 import cn.flypigeon.springbootdemo.mineclearance.component.MineClearance;
 import cn.flypigeon.springbootdemo.mineclearance.entity.GameOver;
+import cn.flypigeon.springbootdemo.mineclearance.entity.PointFlag;
 import cn.flypigeon.springbootdemo.mineclearance.entity.ShowPoint;
 import com.alibaba.fastjson.JSONObject;
 
@@ -29,29 +30,24 @@ public class ClickPointService extends Service {
     protected void process0(Server server, JSONObject command) {
         Integer x = command.getInteger("x");
         Integer y = command.getInteger("y");
+        // 0: 左键 1:中键 2: 右键
         Integer type = command.getInteger("type");
         MineClearance game = (MineClearance) server.getPlayer().getRoom().getGame();
+        if (game.isEnd()) {
+            return;
+        }
         Checkerboard checkerboard = game.getCheckerboard();
         Checkerboard.CheckerPoint point = checkerboard.getPoints()[x][y];
-        if (type == 1) {
+        if (type == 0) {
             if (point.getStatus() == 0) {
                 point.setStatus(3);
                 ShowPoint showPoint = new ShowPoint();
-                List<ShowPoint.Point> points = new ArrayList<>();
-                showPoint.setPoints(points);
+                List<ShowPoint.Point> points = showPoint.getPoints();
                 points.add(new ShowPoint.Point(point.getX(), point.getY(), point.getMineNum(), point.isMine()));
                 if (point.isMine()) {
                     game.gameOver();
                     server.sendJSON(showPoint);
-                    GameOver gameOver = new GameOver();
-                    gameOver.setWin(false);
-                    gameOver.setMines(new ArrayList<>());
-                    List<GameOver.Point> mines = gameOver.getMines();
-                    Checkerboard.CheckerPoint[] minePoints = checkerboard.getMinePoints();
-                    for (Checkerboard.CheckerPoint minePoint : minePoints) {
-                        mines.add(new GameOver.Point(minePoint.getX(), minePoint.getY()));
-                    }
-                    server.sendJSON(gameOver);
+                    server.sendJSON(createGameOverOfLose(checkerboard));
                 } else {
                     if (point.getMineNum() == 0) {
                         showAround(checkerboard, x, y, points);
@@ -59,11 +55,61 @@ public class ClickPointService extends Service {
                     server.sendJSON(showPoint);
                     if (game.isEnd()) {
                         game.gameOver();
-                        GameOver gameOver = new GameOver();
-                        gameOver.setWin(true);
-                        server.sendJSON(gameOver);
+                        server.sendJSON(GameOver.ofWin());
                     }
                 }
+            } else {
+                point.setStatus(0);
+                PointFlag pointFlag = new PointFlag(point.getX(), point.getY(), 0);
+                server.sendJSON(pointFlag);
+            }
+        } else if (type == 1) {
+            if (point.getStatus() == 3) {
+                List<Checkerboard.CheckerPoint> around = checkerboard.around(point.getX(), point.getY());
+                int flagMineCount = 0;
+                boolean existNotShow = false;
+                for (Checkerboard.CheckerPoint p : around) {
+                    if (p.getStatus() == 3) {
+                        continue;
+                    }
+                    existNotShow = true;
+                    if (p.getStatus() == 1) {
+                        flagMineCount++;
+                    } else if (p.getStatus() == 2) {
+                        return;
+                    }
+                }
+                if (existNotShow && flagMineCount == point.getMineNum()) {
+                    ShowPoint showPoint = new ShowPoint();
+                    List<ShowPoint.Point> points = showPoint.getPoints();
+                    boolean hasMine = false;
+                    for (Checkerboard.CheckerPoint p : around) {
+                        if (p.getStatus() == 0) {
+                            if (p.isMine()) {
+                                hasMine = true;
+                            }
+                            p.setStatus(3);
+                            points.add(new ShowPoint.Point(p.getX(), p.getY(), p.getMineNum(), p.isMine()));
+                            if (p.getMineNum() == 0) {
+                                showAround(checkerboard, p.getX(), p.getY(), points);
+                            }
+                        }
+                    }
+                    server.sendJSON(showPoint);
+                    if (hasMine) {
+                        game.gameOver();
+                        server.sendJSON(createGameOverOfLose(checkerboard));
+                    } else if (game.isEnd()) {
+                        game.gameOver();
+                        server.sendJSON(GameOver.ofWin());
+                    }
+                }
+            }
+        } else if (type == 2) {
+            if (point.getStatus() != 3) {
+                point.setStatus((point.getStatus() + 1) % 3);
+                PointFlag pointFlag = new PointFlag(point.getX(), point.getY(), point.getStatus());
+                server.sendJSON(pointFlag);
             }
         }
     }
@@ -80,4 +126,15 @@ public class ClickPointService extends Service {
             }
         }
     }
+
+    private static GameOver createGameOverOfLose(Checkerboard checkerboard) {
+        GameOver gameOver = GameOver.ofLose();
+        List<GameOver.Point> mines = gameOver.getMines();
+        Checkerboard.CheckerPoint[] minePoints = checkerboard.getMinePoints();
+        for (Checkerboard.CheckerPoint minePoint : minePoints) {
+            mines.add(new GameOver.Point(minePoint.getX(), minePoint.getY()));
+        }
+        return gameOver;
+    }
+
 }
