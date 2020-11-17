@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.mineclearance.component;
+package cn.flypigeon.springbootdemo.minesweeper.component;
 
 import lombok.Data;
 

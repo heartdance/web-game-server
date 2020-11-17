@@ -1,15 +1,14 @@
-package cn.flypigeon.springbootdemo.mineclearance.service;
+package cn.flypigeon.springbootdemo.minesweeper.service;
 
 import cn.flypigeon.springbootdemo.game.server.Server;
 import cn.flypigeon.springbootdemo.game.service.Service;
-import cn.flypigeon.springbootdemo.mineclearance.component.Checkerboard;
-import cn.flypigeon.springbootdemo.mineclearance.component.MineClearance;
-import cn.flypigeon.springbootdemo.mineclearance.entity.GameOver;
-import cn.flypigeon.springbootdemo.mineclearance.entity.PointFlag;
-import cn.flypigeon.springbootdemo.mineclearance.entity.ShowPoint;
+import cn.flypigeon.springbootdemo.minesweeper.component.Checkerboard;
+import cn.flypigeon.springbootdemo.minesweeper.component.Minesweeper;
+import cn.flypigeon.springbootdemo.minesweeper.entity.GameOver;
+import cn.flypigeon.springbootdemo.minesweeper.entity.PointFlag;
+import cn.flypigeon.springbootdemo.minesweeper.entity.ShowPoint;
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +31,7 @@ public class ClickPointService extends Service {
         Integer y = command.getInteger("y");
         // 0: 左键 1:中键 2: 右键
         Integer type = command.getInteger("type");
-        MineClearance game = (MineClearance) server.getPlayer().getRoom().getGame();
+        Minesweeper game = (Minesweeper) server.getPlayer().getRoom().getGame();
         if (game.isEnd()) {
             return;
         }

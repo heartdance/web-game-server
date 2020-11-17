@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.mineclearance.entity;
+package cn.flypigeon.springbootdemo.minesweeper.entity;
 
 import cn.flypigeon.springbootdemo.game.entity.Command;
 import lombok.Data;

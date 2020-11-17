@@ -2,7 +2,6 @@ package cn.flypigeon.springbootdemo.bombplane.server;
 
 import cn.flypigeon.springbootdemo.bombplane.service.*;
 import cn.flypigeon.springbootdemo.game.component.base.Hall;
-import cn.flypigeon.springbootdemo.game.component.base.Player;
 import cn.flypigeon.springbootdemo.game.server.WebSocketServer;
 import cn.flypigeon.springbootdemo.game.service.Service;
 import com.alibaba.fastjson.JSON;
@@ -37,12 +36,9 @@ public class MultiPlayerServer extends WebSocketServer {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") Integer userId, @PathParam("userName") String userName) {
-        this.session = session;
-        player = new Player();
+        super.onOpen(session);
         player.setId(userId);
         player.setName(userName);
-        player.setOnline(true);
-        player.setSender(this);
     }
 
     public void onMessage(String message) {

@@ -2,7 +2,6 @@ package cn.flypigeon.springbootdemo.bombplane.server;
 
 import cn.flypigeon.springbootdemo.bombplane.service.RandomPlacePlaneService;
 import cn.flypigeon.springbootdemo.bombplane.service.SingleBoomPointService;
-import cn.flypigeon.springbootdemo.game.component.base.Player;
 import cn.flypigeon.springbootdemo.game.component.base.Room;
 import cn.flypigeon.springbootdemo.game.server.WebSocketServer;
 import cn.flypigeon.springbootdemo.game.service.Service;
@@ -33,11 +32,9 @@ public class SinglePlayerServer extends WebSocketServer {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("userId") Integer userId, @PathParam("userName") String userName) {
-        this.session = session;
-        player = new Player();
+        super.onOpen(session);
         player.setRoom(new Room(1, 1));
         player.setId(userId);
-        player.setSender(this);
         player.setName(userName);
     }
 

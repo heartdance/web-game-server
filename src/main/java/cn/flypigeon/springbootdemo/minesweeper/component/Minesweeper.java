@@ -1,4 +1,4 @@
-package cn.flypigeon.springbootdemo.mineclearance.component;
+package cn.flypigeon.springbootdemo.minesweeper.component;
 
 import cn.flypigeon.springbootdemo.game.component.base.Game;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.Data;
  * Created by htf on 2020/11/16.
  */
 @Data
-public class MineClearance implements Game {
+public class Minesweeper implements Game {
 
     private Checkerboard checkerboard;
 

@@ -18,6 +18,13 @@ public abstract class WebSocketServer implements Server {
     protected Session session;
     protected Player player;
 
+    protected void onOpen(Session session) {
+        this.session = session;
+        player = new Player();
+        player.setOnline(true);
+        player.setSender(this);
+    }
+
     @OnClose
     public void onClose() {
         this.player.setOnline(false);

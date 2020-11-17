@@ -1,9 +1,9 @@
-package cn.flypigeon.springbootdemo.mineclearance.service;
+package cn.flypigeon.springbootdemo.minesweeper.service;
 
 import cn.flypigeon.springbootdemo.game.entity.Command;
 import cn.flypigeon.springbootdemo.game.server.Server;
 import cn.flypigeon.springbootdemo.game.service.Service;
-import cn.flypigeon.springbootdemo.mineclearance.component.MineClearance;
+import cn.flypigeon.springbootdemo.minesweeper.component.Minesweeper;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -22,7 +22,7 @@ public class StartGameService extends Service {
 
     @Override
     protected void process0(Server server, JSONObject command) {
-        MineClearance game = (MineClearance) server.getPlayer().getRoom().getGame();
+        Minesweeper game = (Minesweeper) server.getPlayer().getRoom().getGame();
         game.startGame();
         server.sendJSON(new Command(1));
     }
