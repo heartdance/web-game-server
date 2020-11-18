@@ -9,6 +9,7 @@ import java.util.List;
 public class SnakePoint extends Command {
 
     private List<Point> points;
+    private Integer direction;
 
     public SnakePoint() {
         super(2);

@@ -62,7 +62,7 @@ public abstract class WebSocketServer implements Server {
         sendJSON(errorMessage);
     }
 
-    public void sendJSON(Object json) {
+    public synchronized void sendJSON(Object json) {
         try {
             this.session.getBasicRemote().sendText(JSON.toJSONString(json));
         } catch (IOException e) {

@@ -30,10 +30,13 @@ public class ChangeDirectionService extends Service {
                 game.getDirection() != direction && game.getDirection().negative() != direction) {
             game.setDirection(direction);
             Snake.MoveResult moveResult = game.move();
+
+            SnakePoint snakePoint = new SnakePoint();
+            snakePoint.setPoints(game.getPoints());
+            snakePoint.setDirection(direction.code());
+            server.sendJSON(snakePoint);
+
             if (moveResult == Snake.MoveResult.NOTHING || moveResult == Snake.MoveResult.EAT) {
-                SnakePoint snakePoint = new SnakePoint();
-                snakePoint.setPoints(game.getPoints());
-                server.sendJSON(snakePoint);
                 if (moveResult == Snake.MoveResult.EAT) {
                     Point food = game.getFood();
                     server.sendJSON(new SnakeFood(food.getX(), food.getY()));

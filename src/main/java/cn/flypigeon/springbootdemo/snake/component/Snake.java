@@ -1,6 +1,7 @@
 package cn.flypigeon.springbootdemo.snake.component;
 
 import cn.flypigeon.springbootdemo.game.component.base.Game;
+import cn.flypigeon.springbootdemo.snake.entity.HardLevel;
 import cn.flypigeon.springbootdemo.snake.entity.Point;
 import lombok.Data;
 
@@ -16,6 +17,11 @@ import java.util.Random;
 public class Snake implements Game {
 
     /**
+     * 每隔多少毫秒动一下
+     */
+    private int rate = HardLevel.NORMAL.rate();
+
+    /**
      * 0: 未开始  1: 正在执行  2: 暂停  3: 已结束
      */
     private int status;
@@ -25,13 +31,15 @@ public class Snake implements Game {
     private Direction direction = Direction.RIGHT;
 
     private Point food;
+    
+    private long lastMoveTime;
 
     public void startGame() {
         this.status = 1;
         createFood();
-        points.add(new Point(0, 0));
-        points.add(new Point(1, 0));
         points.add(new Point(2, 0));
+        points.add(new Point(1, 0));
+        points.add(new Point(0, 0));
     }
 
     public void gameOver() {
@@ -39,6 +47,7 @@ public class Snake implements Game {
     }
 
     public synchronized MoveResult move() {
+        lastMoveTime = System.currentTimeMillis();
         Point head = points.get(0);
         int headX = head.getX();
         int headY = head.getY();
@@ -51,8 +60,16 @@ public class Snake implements Game {
         } else if (direction == Direction.LEFT) {
             headX--;
         }
+        // 碰撞地图边缘
         if (headX < 0 || headX >= 20 || headY < 0 || headY >= 20) {
             return MoveResult.COLLIDE;
+        }
+        // 碰撞身体
+        for (int i = 0; i < points.size() - 1; i++) {
+            Point point = points.get(i);
+            if (point.getX() == headX && point.getY() == headY) {
+                return MoveResult.COLLIDE;
+            }
         }
         points.add(0, new Point(headX, headY));
         if (food.getX() == headX && food.getY() == headY) {
