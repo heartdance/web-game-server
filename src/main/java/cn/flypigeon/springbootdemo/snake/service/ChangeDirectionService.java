@@ -7,6 +7,7 @@ import cn.flypigeon.springbootdemo.snake.component.Snake;
 import cn.flypigeon.springbootdemo.snake.entity.Point;
 import cn.flypigeon.springbootdemo.snake.entity.SnakeFood;
 import cn.flypigeon.springbootdemo.snake.entity.SnakePoint;
+import cn.flypigeon.springbootdemo.snake.entity.StopGame;
 import com.alibaba.fastjson.JSONObject;
 
 public class ChangeDirectionService extends Service {
@@ -25,7 +26,10 @@ public class ChangeDirectionService extends Service {
         Integer code = command.getInteger("direction");
         Snake.Direction direction = Snake.Direction.ofCode(code);
         Snake game = (Snake) server.getPlayer().getRoom().getGame();
-        game.resume();
+        if (game.getStatus() == 2) {
+            game.resume();
+            server.sendJSON(StopGame.ofResume());
+        }
         if (game.getStatus() == 1 && direction != null &&
                 game.getDirection() != direction && game.getDirection().negative() != direction) {
             game.setDirection(direction);
